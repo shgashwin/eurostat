@@ -1,11 +1,11 @@
 package com.dbclm.eurostat.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.dbclm.eurostat.controller.EuroStatController;
+import javax.transaction.Transactional;
+
 import com.dbclm.eurostat.dao.EuroStatDao;
 import com.dbclm.eurostat.dao.EuroStatDaoRepository;
 import com.dbclm.eurostat.domain.NaceInfo;
@@ -19,6 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class EuroStatService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EuroStatService.class);
@@ -34,12 +35,10 @@ public class EuroStatService {
 
     public List<NaceInfo> getNaceDetails(String code, final String order, int start,
                                          int count) {
-        if(Objects.nonNull(order)) {
+        if (Objects.nonNull(order)) {
             return euroStatDao.getNaceDetailsByOrder(order);
-        }else if(Objects.nonNull(code)){
-            return euroStatDao.getNaceDetailsByCode(code, start, count);
         }
-        return new ArrayList<>();
+        return euroStatDao.getNaceDetailsByCode(code, start, count);
     }
 
     public void postNaceDetails(NaceInfo naceInfo) {
@@ -56,8 +55,7 @@ public class EuroStatService {
     }
 
     private NaceEntity convertTo(final NaceInfo naceInfo) {
-        final NaceEntity naceEntity = modelMapper.map(naceInfo, NaceEntity.class);
-        return naceEntity;
+        return modelMapper.map(naceInfo, NaceEntity.class);
     }
 
 }

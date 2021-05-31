@@ -10,6 +10,7 @@ public class NaceInfo {
     private String order;
     private int level;
     private String code;
+    private String parent;
     private String description;
     private String itemIncludes;
     private String itemAlsoIncludes;

@@ -1,8 +1,6 @@
 package com.dbclm.eurostat.dao;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,12 +8,9 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.dbclm.eurostat.domain.NaceInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Transactional
 public class EuroStatDao {
 
     @PersistenceContext

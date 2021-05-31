@@ -19,19 +19,30 @@ public class NaceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(unique = true)
     @NotNull
     private String order;
+
     private int level;
+
     private String code;
+
+    private String parent;
+
     @Column(length = 500)
     private String description;
+
     @Lob
     private String itemIncludes;
+
     @Column(length = 500)
     private String itemAlsoIncludes;
+
     private String rulings;
+
     @Lob
     private String itemExcludes;
+
     private String references;
 }

@@ -18,6 +18,7 @@ import com.dbclm.eurostat.exception.DuplicateOrderException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -58,15 +59,19 @@ class EurostatServiceTest {
 
     @Test
     public void shouldSaveNaceDetailsToDB() {
-
+        // arrange // 3A pattern
         when(euroStatDaoRepository.save(Mockito.any())).thenReturn(naceEntity);
 
         final NaceInfo naceInfo = new NaceInfo();
         naceInfo.setCode("A");
         naceInfo.setOrder("12345");
+
+        // action
         euroStatService.postNaceDetails(naceInfo);
+
+        //Assert
         Mockito.verify(euroStatDaoRepository).save(naceEntityArgumentCaptor.capture());
-        NaceEntity value = naceEntityArgumentCaptor.getValue();
+        final NaceEntity value = naceEntityArgumentCaptor.getValue();
         assertThat(value.getCode(), is("A"));
         assertThat(value.getOrder(), is("12345"));
     }
@@ -105,7 +110,7 @@ class EurostatServiceTest {
         naceInfoList.add(naceInfo);
         when(euroStatDao.getNaceDetailsByOrder("9990")).thenReturn(naceInfoList);
 
-        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", "9990",0, 20);
+        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", "9990", 0, 20);
         assertThat(naceDetails, Matchers.hasSize(2));
     }
 
@@ -117,9 +122,9 @@ class EurostatServiceTest {
         naceInfo.setOrder("9990");
         naceInfoList.add(naceInfo);
         naceInfoList.add(naceInfo);
-        when(euroStatDao.getNaceDetailsByCode("A",0,20)).thenReturn(naceInfoList);
+        when(euroStatDao.getNaceDetailsByCode("A", 0, 20)).thenReturn(naceInfoList);
 
-        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", null,0, 20);
+        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", null, 0, 20);
         assertThat(naceDetails, Matchers.hasSize(2));
     }
 
@@ -128,16 +133,16 @@ class EurostatServiceTest {
 
         when(euroStatDao.getNaceDetailsByOrder("9990")).thenReturn(Arrays.asList());
 
-        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", "9990",0, 20);
+        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", "9990", 0, 20);
         assertThat(naceDetails, Matchers.hasSize(0));
     }
 
     @Test
     public void shouldGetEmptyListOfNaceDetailsByCodeWhenDataDoesNotExist() {
 
-        when(euroStatDao.getNaceDetailsByCode("A",0,20)).thenReturn(Arrays.asList());
+        when(euroStatDao.getNaceDetailsByCode("A", 0, 20)).thenReturn(Arrays.asList());
 
-        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", null,0, 20);
+        final List<NaceInfo> naceDetails = euroStatService.getNaceDetails("A", null, 0, 20);
         assertThat(naceDetails, Matchers.hasSize(0));
     }
 

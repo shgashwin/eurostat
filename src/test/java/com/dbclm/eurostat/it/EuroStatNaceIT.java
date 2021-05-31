@@ -51,7 +51,7 @@ public class EuroStatNaceIT {
     }
 
     @Test
-    public void shouldThrowExceptionWhenTryToSaveNaceDetailsWithSameOrder() {
+    public void shouldThrowExceptionWhenTryToSaveNaceDetailsWithSameOrderId() {
 
         final NaceInfo naceInfo = new NaceInfo();
         naceInfo.setCode("A");
